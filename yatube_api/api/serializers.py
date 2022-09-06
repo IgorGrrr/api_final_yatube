@@ -5,7 +5,10 @@ from posts.models import Comment, Post, Follow, Group, User
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    author = serializers.SlugRelatedField(
+        slug_field='username', 
+        read_only=True
+    )
 
     class Meta:
         fields = '__all__'
@@ -13,7 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
- 
+
     class Meta:
         fields = '__all__'
         model = Group
@@ -22,7 +25,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         slug_field='username',
-        read_only=True, 
+        read_only=True,
     )
 
     class Meta:
@@ -42,7 +45,6 @@ class FollowSerializer(serializers.ModelSerializer):
         queryset=User.objects.filter()
     )
 
-
     class Meta:
         model = Follow
         fields = ('user', 'following',)
@@ -53,5 +55,5 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['user'] == data['following']:
-            raise serializers.ValidationError("You can't follow yourself.")
+            raise serializers.ValidationError("You cant follow yourself.")
         return data
