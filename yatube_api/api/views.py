@@ -1,9 +1,10 @@
+from pickletools import pybytes_or_str
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import viewsets, permissions, mixins, filters
 
-from posts.models import Group, Post, Comment, Follow
+from posts.models import Group, Post
 from .serializers import (PostSerializer,
                           GroupSerializer,
                           CommentSerializer,
@@ -31,7 +32,7 @@ class CommentViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
-        return post.comments
+        return post.comments.all()
 
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
@@ -41,7 +42,7 @@ class CommentViewset(viewsets.ModelViewSet):
 class FollowViewset(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
-    queryset = Follow.objects.all()
+    #queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
