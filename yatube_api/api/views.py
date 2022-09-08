@@ -1,4 +1,3 @@
-from pickletools import pybytes_or_str
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -42,7 +41,6 @@ class CommentViewset(viewsets.ModelViewSet):
 class FollowViewset(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
-    #queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
